@@ -450,7 +450,28 @@ void(float order, float sub_order, string header) Menu_DrawCreditContributor =
 void() Menu_DrawBuildDate =
 {
 	sui_set_align([SUI_ALIGN_END, SUI_ALIGN_START]);
-	sui_text([-6, 8], MENU_TEXT_SMALL, build_datetime, [1, 1, 1], 1, 0);
+	
+	// Create version string with clipboard icon
+	string version_text = sprintf("📋 %s", build_datetime);
+	vector text_size = [getTextWidth(version_text, MENU_TEXT_SMALL_x), MENU_TEXT_SMALL_y];
+	
+	// Position where the text will be drawn
+	vector text_pos = [-6, 8];
+	
+	// Define clickable action element to cover the text area
+	sui_action_element(text_pos, text_size, "version_copy_to_clipboard", sui_noop);
+	
+	// Check hover state and set color - red when hovered, white when not
+	vector text_color = sui_is_hovered("version_copy_to_clipboard") ? [1, 0, 0] : [1, 1, 1];
+	
+	// Draw version text
+	sui_text(text_pos, MENU_TEXT_SMALL, version_text, text_color, 1, 0);
+	
+	// Copy build date to clipboard when clicked
+	if (sui_is_clicked("version_copy")) {
+		clipboard_set(0, build_datetime);
+	}
+	
 	sui_text([-6, 22], MENU_TEXT_SMALL, sprintf("Welcome, %s", cvar_string("name")), [1, 1, 0], 1, 0);
 };
 

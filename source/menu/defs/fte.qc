@@ -1051,4 +1051,8 @@ accessor filestream : float
 	inline set string = {fputs(this,value);};
 };
 #endif
+
+void(int cliptype, string text) clipboard_set = #0:clipboard_set; /*
+		Changes the system clipboard to the specified text. */
+
 #pragma noref 0
